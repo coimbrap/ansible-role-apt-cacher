@@ -1,0 +1,33 @@
+---
+# tasks file for apt-cacher
+- name: install | installing apt-cacher requirement
+  apt:
+    update_cache: yes
+    name: "{{ item }}"
+  with_items: "{{ apt_cacher_package }}"
+
+- name: Set config
+  lineinfile:
+    dest: /etc/apt-cacher-ng/acng.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state | default('present') }}"
+  with_items:
+    - { regexp: "^Port:", line: "Port: {{ apt_cacher_port }}" }
+    - { regexp: "^BindAddress:\ ", line: "BindAddress: {{ apt_cacher_bind }}" }
+    - { regexp: "^PassThroughPattern:\ ", line: "PassThroughPattern: ^(.*):443$" }
+  notify:
+    - restart apt-cacher-ng
+
+- name: Remove /etc/apt-cacher-ng/zz_debconf.conf
+  file:
+    path: /etc/apt-cacher-ng/zz_debconf.conf
+    state: absent
+  notify:
+    - restart apt-cacher-ng
+
+- name: Enable apt-cacher-ng on boot
+  service:
+    name: apt-cacher-ng
+    state: started
+    enabled: true

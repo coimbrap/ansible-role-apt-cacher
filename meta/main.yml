@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  role_name: apt-cacher
+  author: Pierre Coimbra
+  description: Ansible role to install and configure apt-cacher-ng
+  license: GPLv3
+  min_ansible_version: 2.1
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+  galaxy_tags:
+    - system
+    - apt-cacher
+    - aptcache
+    - cache
+dependencies: []

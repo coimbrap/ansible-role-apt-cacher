@@ -1,0 +1,9 @@
+---
+# defaults file for apt-cacher
+apt_cacher_package:
+  - apt-cacher-ng
+
+apt_cacher_port: 9999
+apt_cacher_bind: 10.0.0.1
+
+proxy_address_type: ipv4
